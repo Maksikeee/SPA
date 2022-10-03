@@ -13,11 +13,19 @@ function Product () {
         element.classList.add('product')
 
         element.innerHTML= `<div class="product__wrapper">
-                                <h1>${title}<h1>
-                                <h3>${price}</h3>
-                                <button class="add__product__cart" id="${id}">Add to cart</button>
-                                <p>${description}</p>
+                                <div class="catalog__item__image">
                                 <img src="${image}" alt="${title}">
+                                </div>
+                                
+                                <div class="product__item__option">
+                                    <p class="product__title">${title}<p>
+                                    <p class="product__description">${description}</p>
+                                    <p class="product__price">${price}$</p>
+                                    <button class="catalog__item__btn" id="${id}">Add to cart</button>
+                                </div>
+                                
+                                
+                                
                             </div>`
 
         return element
@@ -26,7 +34,6 @@ function Product () {
     
     this.init = () => {
         const idProduct = location.hash.split('/')[1];
-        console.log(idProduct)
         return this.create(idProduct)
     }
 }

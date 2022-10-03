@@ -25,7 +25,7 @@ function Catalog () {
                         <div class="catalog__item__info">
                             <div class="catalog__item__title"><a href="#${CATALOG}/${id}">${title}</a></div>
                             <div class="catalog__item__option">
-                                <div class="catalog__item__price">${price}$</div>
+                                <div class="item__price">${price}$</div>
                                 <button class="catalog__item__btn" id="${id}">Add to cart</button>
                             </div>
                         </div>

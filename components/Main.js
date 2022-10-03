@@ -1,5 +1,6 @@
 import { getSlugOfHash, getPageData, hashChangeEvent } from '../utils/utils.js';
-import { CATALOG, CART } from '../constats/constants.js'
+import { CATALOG, CART, CONTACTS, HOME, ABOUT_US } from '../constats/constants.js'
+
 
 
 function Main () {
@@ -26,19 +27,42 @@ function Main () {
 
 
         if(slugOfHash === CART){
+            this.element.innerHTML=`<div class="loader">Loading...</div>`
             import('./Cart.js').then(response => {
                 const cartData = response.default;
                 this.renderCart(cartData);
+                this.btnCartDelete(cartData);
                 this.clearCart(cartData);
             })
         }
 
-        
+        if(slugOfHash === CONTACTS){
+            this.element.innerHTML=`<div class="loader">Loading...</div>`
+            import('./Contacts.js').then(response => {
+                const responseDefault = response.default.outerHTML
+                this.element.innerHTML = this.getHtmlTemplate(title, content, responseDefault)
+            })
+        }
 
+        if(slugOfHash === HOME){
+            this.element.innerHTML=`<div class="loader">Loading...</div>`
+            import('./Home.js').then(response => {
+                const responseDefault = response.default.outerHTML
+                this.element.innerHTML = this.getHtmlTemplate(title, content, responseDefault)
+            })
+        }
+
+        if(slugOfHash === ABOUT_US){
+            this.element.innerHTML=`<div class="loader">Loading...</div>`
+            import('./AboutUs.js').then(response => {
+                const responseDefault = response.default.outerHTML
+                this.element.innerHTML = this.getHtmlTemplate(title, content, responseDefault)
+            })
+        }
 
         if(slugOfHash.includes(CATALOG)){
-
             if(slugOfHash === CATALOG) {
+                this.element.innerHTML=`<div class="loader">Loading...</div>`
                 import('./Catalog.js').then(response => {
                     const responseDefault = response.default
                     responseDefault.then(data => {
@@ -54,12 +78,12 @@ function Main () {
             }
 
             if(slugOfHash.includes('/')) {
-                this.element.innerHTML=`Loading...`
+                this.element.innerHTML=`<div class="loader">Loading...</div>`
                 import('./Product.js').then(response => {
                     const product = response.default.init();
                     product.then(productData => {
                         this.element.innerHTML=productData.outerHTML;
-                        const addProductBtn = this.element.querySelector('.add__product__cart')
+                        const addProductBtn = this.element.querySelector('.catalog__item__btn')
                         addProductBtn.addEventListener('click', (e) => {this.addToCart(e.target.id)})
                     })
                 })
@@ -71,7 +95,6 @@ function Main () {
     this.cart = JSON.parse(localStorage.getItem('cart')) || []
 
     this.addToCart = (idProduct) => {
-        console.log(this.cart)
         const dataCatalog = JSON.parse(localStorage.getItem('catalogData'))
         const product = dataCatalog.find(({id}) => id === +idProduct)
         const arrayIndex = this.cart.findIndex(({id}) => id === +idProduct);
@@ -96,6 +119,25 @@ function Main () {
                 </div>`
     }
 
+
+    this.btnCartDelete = (cartData) => {
+        const deleteButtons = this.element.querySelectorAll('.cart__delete__btn');
+        deleteButtons.forEach((btn) => {
+            btn.addEventListener('click', (e) => {
+                this.delete(e.target.id);
+                this.renderCart(cartData)
+                
+            })
+        })
+    }
+
+    this.delete = (idProduct) => {
+        this.cart = this.cart.filter(({id}) => id !== +idProduct)
+        // console.log(newCart)
+        localStorage.setItem('cart', JSON.stringify(this.cart))
+    }
+
+
     this.clearCart = (data) => {
         const btnCartClear = document.querySelector('.btn__clear__cart');
         if(btnCartClear){
@@ -109,9 +151,10 @@ function Main () {
     }
 
     this.renderCart = (data) => {
-        console.log(data)
         const cart = data.init();
         this.element.innerHTML = cart.outerHTML;
+        this.clearCart(data)
+        this.btnCartDelete(data)
     }
 
 

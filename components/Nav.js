@@ -3,15 +3,26 @@ function Nav () {
     this.create = () => {
         const element = document.createElement('nav')
         element.classList.add('nav')
+
+
         let li= '';
 
         this.localData.forEach(({slug, title}) => {
             li += `<li class="nav__item"><a href="#${slug}">${title}</a></li>`
         });
+        
 
-        element.innerHTML=`<ul class="nav__items">
-                            ${li}
-                          </ul>`
+        element.innerHTML=`
+                            <div class="menu-btn">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </div>
+                            <ul class="nav__items">
+                                ${li}
+                            </ul>`
+
+                            
 
         return element
     }

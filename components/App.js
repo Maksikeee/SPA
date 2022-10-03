@@ -43,6 +43,26 @@ function App () {
         this.app.appendChild(header);      
         this.app.appendChild(main);      
         this.app.appendChild(footer);
+
+        let menuBtn = document.querySelector('.menu-btn');
+        let menu = document.querySelector('.nav__items');
+
+        menuBtn.addEventListener('click', function(){
+            menu.classList.toggle('active');
+            menuBtn.classList.toggle('active__btn');
+        })
+
+        document.addEventListener('click', (e) => {
+            if(e.target!==menuBtn && e.target!==menu && !menuBtn.contains(e.target) && !menuBtn.contains(e.target)){
+                if(menuBtn.classList.contains('active__btn')){
+                    menu.classList.remove('active');
+                    menuBtn.classList.remove('active__btn');
+                }
+            }
+        })
+
+
+        
     }
 
     this.init = () => {
